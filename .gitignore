@@ -1,0 +1,15 @@
+.vs/
+bin/
+obj/
+x64/
+Debug/
+Release/
+*.ipch
+*.user
+*.exe
+*.dll
+*.pdb
+*.recipe
+vlc-runtime/
+packages/
+recibido_*

@@ -5,7 +5,11 @@
 #include <commctrl.h>  // Barras comunes de interfaz (ProgressBar)
 #include <stdio.h>     // Formateo de texto en memoria
 #include "protocolo.h" // Estructura binaria de control de red unificada
-#include "reproductor.h" // Ventana independiente de control multimedia con libVLC
+#include "reproductor.h"
+
+// Declaración directa para evitar que este archivo dependa de los encabezados
+// de libVLC incluidos transitivamente por reproductor.h.
+void AbrirReproductorInterno(HWND hwnd, const char* rutaVideo);
 
 // Enlaces estáticos explícitos requeridos por el compilador para el Linker
 #pragma comment(lib, "ws2_32.lib")   // Librería de red sockets
@@ -63,7 +67,7 @@ DWORD WINAPI HiloEnviarArchivo(LPVOID lpParam) {
     // Lee el archivo de forma iterativa y lo empuja al canal de comunicación socket TCP
     while ((bytesLeidos = fread(buffer, 1, BUFFER_SIZE, f)) > 0) {
         int enviados = send(sock, buffer, (int)bytesLeidos, 0); // Despacha los bytes binarios por red
-        if (envenidos <= 0) break; // Si el servidor cayó o la conexión expiró, aborta el envío
+        if (enviados <= 0) break; // Si el servidor cayó o la conexión expiró, aborta el envío
         totalEnviado += enviados; // Suma los bytes despachados con éxito
         int porcentaje = (int)((totalEnviado * 100) / tamano); // Calcula el porcentaje de avance
         SendMessageA(hProgreso, PBM_SETPOS, porcentaje, 0); // Modifica la longitud de la barra en la interfaz
